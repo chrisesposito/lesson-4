@@ -1,19 +1,39 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+import AlertContainer from 'react-alert'
 import './PastryPage.css'
 
-function formatPrice (priceInCents) {
+function formatPrice (priceInCents) 
+{
   return `$${(priceInCents / 100).toFixed(2)}`
 }
 
 class PastryPage extends React.Component {
-  constructor () {
-    super()
-    this.addToOrder = this.addToOrder.bind(this)
+
+    constructor () 
+    {
+      super()
+
+      this.showAlert = this.showAlert.bind(this)
+      this.render = this.render.bind(this)
+    }
+
+  alertOptions = 
+  {
+    offset: 14,
+    position: 'bottom left',
+    theme: 'light',
+    time: 5000,
+    transition: 'scale'
   }
 
-  addToOrder (e) {
-    e.preventDefault()
-    console.log(this.pastryName.value)
+  showAlert() 
+  {
+    this.msg.show('Added to Basket!', 
+    {
+      time: 2000,
+      type: 'success'
+    })
   }
 
   render () {
@@ -30,13 +50,19 @@ class PastryPage extends React.Component {
             <div className='price'>{formatPrice(pastry.price)}</div>
           </div>
         </div>
-        <form method='POST' action='/orders' className='add-to-order' onSubmit={this.addToOrder}>
-          <input type='hidden' value={pastry.name} ref={(input) => { this.pastryName = input }} />
-          <button type='submit'>Add to Order</button>
+        <form method='POST' action='/order' className='add-to-order' onSubmit={this.props.addToOrder}>                                                   
+          <input type='hidden' value={pastry.name}  />
+          <button type='submit' onClick={this.showAlert} >Add to Order</button>
         </form>
+	    <AlertContainer ref={a => this.msg = a} {...this.alertOptions} />
       </div>
     )
   }
+}
+
+PastryPage.propTypes = {
+  pastry: PropTypes.object.isRequired,
+  addToOrder: PropTypes.func.isRequired
 }
 
 export default PastryPage
