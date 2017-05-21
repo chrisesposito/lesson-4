@@ -44,12 +44,12 @@ class Root extends React.Component
     addToOrder(e)
     {
         e.preventDefault()
-        console.log({target: event.target})
-        const input = event.target.querySelector('input')
-        const value = input.value
+        //console.log({target: event.target})
+        const pastryName = e.target.querySelector('input').value
+        console.log(" adding name: " + pastryName)
 
         const pastries = Object.keys(this.state.pastries).map(key => this.state.pastries[key])
-        const pastry = pastries.find(p => p.name === value)
+        const pastry = pastries.find(p => p.name === pastryName)
         const order = Object.assign({}, this.state.order) // get existing order
         const orderPastry = Object.assign({}, order[pastry.name])
 
@@ -60,11 +60,13 @@ class Root extends React.Component
 
             // add to order
             order[pastry.name] = orderPastry
+            console.log("added another " + pastry.name + " to order")
         }
         else
         {
             // this pastry doesn't exist in order yet so add new pastry type to order
             order[pastry.name] = Object.assign({}, pastry, {quantity: 1})
+            console.log("added first " + pastry.name + " to order")
         }
 
 
@@ -120,12 +122,12 @@ class Root extends React.Component
 
                         <Route exact path='/' render={(props) => (
                                         <PastryList pastries={this.state.pastries} />
-                                )}
+                                            )}
                             />
 
                             <Route path='/order' render={(props) => (
                                         <Order order={this.state.order} removeFromOrder={this.removeFromOrder} clearOrder={this.clearOrder} />
-                                )}
+                                                )}
                                 />
 
                                 <Route path='/:pastry' render={props =>
@@ -133,15 +135,15 @@ class Root extends React.Component
                                         const pastryName = props.match.params.pastry
                                         const pastries = Object.keys(this.state.pastries).map(key => this.state.pastries[key])
                                         const pastry = pastries.find(p => p.name === pastryName)
-                                               if (pastry)
+                                        if (pastry)
+                                        {
+                                                   return (<PastryPage pastry={pastry} addToOrder={this.addToOrder} />)
+                                                   }
+                                                   else
                                                    {
-                                                       return (<PastryPage pastry={pastry} addToOrder={this.addToOrder} />)
-                                            }
-                                            else
-                                            {
-                            return (<Route path='*' status={404} component={NotFound} />)
-                        }  // end if(pastry)
-                    }
+                                                return (<Route path='*' status={404} component={NotFound} />)
+                                            }  // end if(pastry)
+                                        }
                                     }
                                     />
 
@@ -153,6 +155,6 @@ class Root extends React.Component
 } // end class
 
 ReactDOM.render(
-                            <Root />,
+        <Root />,
         document.getElementById('root')
         )
