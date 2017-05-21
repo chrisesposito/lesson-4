@@ -23,7 +23,7 @@ class Order extends React.Component
         console.log("totalPrice = " + totalPrice)
         return (
                 <div className='order-wrap'>
-                    <h2 className='car-word'>Basket</h2>
+                    <h2 className='car-word'>Your Order</h2>
                     <table className='order'>
                         <thead>
                             <tr>
@@ -55,7 +55,7 @@ class Order extends React.Component
                             <tr>
                                 <td colSpan='4' className='clear-wrap'>
                                     <form method='POST' action='/order' className='clear-order' onSubmit={this.props.clearOrder}>
-                                        <button type='submit' className='btn'>Clear Basket</button>
+                                        <button type='submit' className='btn'>Clear Order</button>
                                     </form>
                                 </td>
                             </tr>
